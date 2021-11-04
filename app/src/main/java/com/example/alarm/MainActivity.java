@@ -2,7 +2,6 @@ package com.example.alarm;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
@@ -13,9 +12,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
-
 import java.text.DateFormat;
 import java.util.Calendar;
+
 
 public class MainActivity extends AppCompatActivity implements
         TimePickerDialog.OnTimeSetListener {
@@ -26,8 +25,7 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
         mTextView = findViewById(R.id.TextView);
         //memunculkan dialog timepicker menggunakan library dariandroid
-        Button buttonTimePicker = (Button)
-                findViewById(R.id.button_time_picker);
+        Button buttonTimePicker = (Button) findViewById(R.id.button_time_picker);
         buttonTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,8 +34,7 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
         //untuk menggagalkan alarm yang sudah disetel
-        Button buttonCancelAlarm =
-                findViewById(R.id.button_cancel);
+        Button buttonCancelAlarm = findViewById(R.id.button_cancel);
         buttonCancelAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,8 +44,7 @@ public class MainActivity extends AppCompatActivity implements
     }
     //menangkap inputan jam kalian lalu memulai alarm
     @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int
-            minute) {
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.HOUR_OF_DAY,hourOfDay);
         c.set(Calendar.MINUTE,minute);
@@ -59,31 +55,26 @@ public class MainActivity extends AppCompatActivity implements
     //mengganti text view
     private void updateTimeText(Calendar c){
         String timeText = "Alarm set for: ";
-        timeText +=
-                DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime());
+        timeText += DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime());
         mTextView.setText(timeText);
     }
     //memulai alarm
     private void startAlarm(Calendar c){
-        AlarmManager alarmManager = (AlarmManager)
-                getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this,AlertReceiver.class);
-        PendingIntent pendingIntent =
-                PendingIntent.getBroadcast(this,1,intent,0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,1,intent,0);
         if(c.before(Calendar.getInstance())){
             c.add(Calendar.DATE,1);
         }
+        //alarm dapat berfungsi tepat waktu dan juga walaupun dalam kondisi HP idle
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),pendingIntent);
 
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP,c.getTimeInMillis()
-                ,pendingIntent);
     }
     //menggagalkan alarm
     private void cancelAlarm(){
-        AlarmManager alarmManager = (AlarmManager)
-                getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this,AlertReceiver.class);
-        PendingIntent pendingIntent =
-                PendingIntent.getBroadcast(this,1,intent,0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,1,intent,0);
         alarmManager.cancel(pendingIntent);
         mTextView.setText("Alarm Canceled");
     }

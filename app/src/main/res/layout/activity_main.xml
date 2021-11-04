@@ -15,6 +15,16 @@
         android:layout_above="@+id/button_time_picker"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="31dp"/>
+
+    <DigitalClock
+        android:id="@+id/analogClock1"
+        android:paddingTop="150dp"
+        android:paddingLeft="125dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="50dp"
+        android:textColor="#4efc03"/>
+
     <Button
         android:id="@+id/button_time_picker"
         android:layout_width="wrap_content"

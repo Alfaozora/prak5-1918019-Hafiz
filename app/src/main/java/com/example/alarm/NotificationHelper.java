@@ -6,10 +6,11 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.os.Build;
-
+import android.os.Vibrator;
 import androidx.core.app.NotificationCompat;
 
 public class NotificationHelper extends ContextWrapper {
+    int notificationID = 1;
     public static final String channelID = "channelID";
     public static final String channelName = "Channel Name";
     private NotificationManager mManager;
@@ -34,17 +35,17 @@ public class NotificationHelper extends ContextWrapper {
     //membuka izin pengaturan dari aplikasi untuk memulai servicenotifikasi
     public NotificationManager getManager() {
         if (mManager == null) {
-            mManager = (NotificationManager)
-                    getSystemService(Context.NOTIFICATION_SERVICE);
+            mManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         }
         return mManager;
+
     }
     //builder yang akan membuat notifikasi tampil
     public NotificationCompat.Builder getChannelNotification() {
-        return new
-                NotificationCompat.Builder(getApplicationContext(), channelID)
+        return new NotificationCompat.Builder(getApplicationContext(), channelID)
                 .setContentTitle("Alarm!")
                 .setContentText("Alarm Dinyalakan ")
                 .setSmallIcon(R.drawable.alrm);
     }
+
 }
